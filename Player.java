@@ -11,6 +11,9 @@ public class Player {
     private Ship[] shipsComp;
     private String shot = "X";
     private String shotToShip = "*";
+    private final int killed = 2;
+    private final int wounded = 1;
+    private final int miss = 0;
 
     public void setShipsComp(Ship[] shipsComp) {
         this.shipsComp = shipsComp;
@@ -28,7 +31,7 @@ public class Player {
         return shot;
     }
 
-    public void playerShot() {
+    public int playerShot() {
         int horyz;
         int vertic;
         int indexShip = -1;
@@ -66,18 +69,19 @@ public class Player {
                     }
                 }
             }
-            chekShip(indexShip);
             compField.spaceGame[vertic][horyz] = shotToShip;
+            return chekShip(indexShip);
         } else {
             compField.spaceGame[vertic][horyz] = shot;
             System.out.println("Промах");
+            return miss;
         }
     }
 
-    private void chekShip(int indexShip) {
+    private int chekShip(int indexShip) {
         if (indexShip == -1) {
             System.out.println("Индекс -1");
-            return;
+            return -1;
         }
 
         int countDead = 0;
@@ -97,6 +101,11 @@ public class Player {
         }
         if (countDead == shipsComp[indexShip].getNumberDeck()) {
             System.out.println("Корабль " + indexShip + " убит");
-        }else System.out.println("Ранил");
+            return killed;
+        } else {
+            System.out.println("Ранил");
+            return wounded;
+        }
     }
 }
+

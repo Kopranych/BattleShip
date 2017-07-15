@@ -5,6 +5,7 @@ public class GUI {
     private Field fieldComp;
     private Field fieldPlayer;
 
+
     public void setFieldPlayer(Field fieldPlayer) {
         this.fieldPlayer = fieldPlayer;
     }

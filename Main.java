@@ -18,19 +18,17 @@ public class Main {
 
         display.setFieldComp(fieldComp);
         comp.setCompField(fieldComp);
-        comp.compField.setShipField(ship);
-        comp.compField.initGame();
+        comp.setCompField(fieldComp);
+        fieldComp.setShipField(ship);
+        fieldComp.initGame();
         man.setCompField(fieldComp);
         man.setShipsComp(ship);
 
-        comp.compField.setFleet();
+        fieldComp.setFleet();
         for (int i = 0; i < 10; i++) {
 
             display.showField(fieldComp);
             man.playerShot();
-
-
-
         }
 
     }
