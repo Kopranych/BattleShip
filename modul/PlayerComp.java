@@ -1,4 +1,5 @@
-import java.util.Random;
+package modul;
+
 
 /**
  * Created by kopra on 16.06.2017.

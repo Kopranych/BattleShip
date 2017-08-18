@@ -1,8 +1,10 @@
+import modul.*;
+import view.GUI;
+
 /**
  * Created by kopra on 14.06.2017.
  */
 public class Main {
-
 
     public static void main(String[] args) {
         GUI display = new GUI();
@@ -12,6 +14,7 @@ public class Main {
         Field fieldComp = new Field();
         Ship[] ship = new Ship[10];
 
+        display.init_window();
         for (int i = 0; i < ship.length; i++) {
             ship[i] = new Ship();
         }
@@ -23,10 +26,9 @@ public class Main {
         fieldComp.initGame();
         man.setCompField(fieldComp);
         man.setShipsComp(ship);
-
         fieldComp.setFleet();
-        for (int i = 0; i < 10; i++) {
 
+        for (int i = 0; i < 10; i++) {
             display.showField(fieldComp);
             man.playerShot();
         }

@@ -1,3 +1,5 @@
+package modul;
+
 import java.util.Random;
 
 /**
@@ -12,7 +14,7 @@ public class Field {
     public static final int YCOOR = 10;
     private static final int FIELD_SIZE = 11;
     private String empty = "|";
-    static final String[][] spaceGame = new String[FIELD_SIZE][FIELD_SIZE];
+    public static final String[][] spaceGame = new String[FIELD_SIZE][FIELD_SIZE];
     private String[] topStringField = {" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
 
     public void setShipField(Ship[] shipField) {
