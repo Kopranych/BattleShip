@@ -39,10 +39,6 @@ public class Player {
         int vertic;
         int indexShip = -1;
         Scanner sc = new Scanner(System.in);
-        Random generator = new Random();
-
-        vertic = generator.nextInt(compField.spaceGame.length - 1) + 1;
-        horyz = generator.nextInt(compField.spaceGame.length - 1) + 1;
 
         System.out.println("Введите координаты выстрела вертикальные");
         vertic = Integer.valueOf(sc.nextLine());

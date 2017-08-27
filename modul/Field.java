@@ -1,5 +1,9 @@
 package modul;
 
+import view.GUI;
+import view.GUIJButton;
+
+import javax.swing.*;
 import java.util.Random;
 
 /**
@@ -13,9 +17,29 @@ public class Field {
     public static final int XCOOR = 10;
     public static final int YCOOR = 10;
     private static final int FIELD_SIZE = 11;
-    private String empty = "|";
+    private GUIJButton[][] buttons;
+    private static final String EMPTY = "|";
     public static final String[][] spaceGame = new String[FIELD_SIZE][FIELD_SIZE];
     private String[] topStringField = {" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+
+    public enum stateCells {
+        EMPTY, WOUNDE, KILL
+    }
+    stateCells[][] cellsField;
+
+
+    public Field() {
+        cellsField = new stateCells[XCOOR][YCOOR];
+        for (int i = 0; i < cellsField.length; i++) {
+            for (int j = 0; j < cellsField.length; j++) {
+                cellsField[i][j] = stateCells.EMPTY;
+            }
+        }
+    }
+
+    public void setButtons(GUIJButton[][] buttons) {
+        this.buttons = buttons;
+    }
 
     public void setShipField(Ship[] shipField) {
         this.shipField = shipField;
@@ -35,7 +59,7 @@ public class Field {
 
                     spaceGame[i][0] = Integer.toString(i);//строку переводим в символ
                 } else
-                    spaceGame[i][j] = empty;
+                    spaceGame[i][j] = EMPTY;
             }
         }
     }
@@ -44,7 +68,7 @@ public class Field {
 
 
     //метод установки корабля в игровое поле
-    public int setShipToField(Ship ship) {
+    public boolean setShipToField(Ship ship) {
         Random generator = new Random();
         int vertical;
         int horizont;
@@ -52,6 +76,7 @@ public class Field {
         final int limitAttempt2 = limitAttempt + 500;
         int countAttempt = 0;
         boolean isBusy;
+        boolean isSucsess = false;
 
         do {
             isBusy = false;
@@ -70,7 +95,7 @@ public class Field {
             countAttempt++;
             if (countAttempt == limitAttempt) {
                 ship.rotateShip();//переворачиваем корабль и пробуем установить в новом положении
-            } else if (countAttempt >= limitAttempt2) return 0;
+            } else if (countAttempt >= limitAttempt2) return isSucsess;
         }
         while ((vertical + ship.getShipBox().length) > (spaceGame.length) ||//проверка чтобы корабль не вышел за границы поля
                 (horizont + ship.getShipBox()[0].length) > (spaceGame.length) || isBusy);
@@ -79,21 +104,23 @@ public class Field {
         for (int i = 0; i < ship.getShipBox().length; i++) {//
             for (int j = 0; j < ship.getShipBox()[i].length; j++) {
                 spaceGame[i + vertical][j + horizont] = ship.getShipBox()[i][j];//выставляем корабль в поле
+                buttons[vertical][horizont].setText(Ship.INTACT);
             }
         }
         ship.setCoordinY(vertical);
         ship.setCoordinX(horizont);
-        return 1;//расстановка кораблей успешна
+        isSucsess = true;
+        return isSucsess;//расстановка кораблей успешна
     }
 
 
 
 //   Метод размещения кораблей в игровом поле
     public void setFleet() {
-        int setShipSuccessful = 0;
+        boolean setShipSuccessful = false;
         int pos = 1;
 
-        while (setShipSuccessful == 0) {
+        while (!setShipSuccessful) {
             for (int i = 0; i < shipField.length; i++) {
                 pos ^= shipField[0].getVertikCoord();
                 if (i < shipField[0].getNumOneTiered()) {

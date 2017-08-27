@@ -1,7 +1,9 @@
 package view;
 
 
+import control.ActionListenerComp;
 import modul.Field;
+import modul.PointOnField;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +18,13 @@ public class GUI extends JFrame implements GUIvable {
     private Field fieldPlayer;
     private GUIJFrame windowGame;
     private GUIJButton[] menuButton = new GUIJButton[3];
-    private GUIJButton[][] gameButtons;
+    private GUIJButton[][] gameButtonsComp;
+
+    public void setGameButtonsPlayer(JButton[][] gameButtonsPlayer) {
+        this.gameButtonsPlayer = gameButtonsPlayer;
+    }
+
+    private JButton[][] gameButtonsPlayer;
     private GUIJPanel panelGameComp = new GUIJPanel();
     private GUIJPanel panelGamePlayer = new GUIJPanel();
     private GUIJPanel panelLable = new GUIJPanel();
@@ -30,8 +38,8 @@ public class GUI extends JFrame implements GUIvable {
         this.windowGame = windowGame;
     }
 
-    public void setGameButtons(GUIJButton[][] gameButtons) {
-        this.gameButtons = gameButtons;
+    public void setGameButtonsComp(GUIJButton[][] gameButtonsComp) {
+        this.gameButtonsComp = gameButtonsComp;
     }
 
     private GUIJPanel menuPanel = new GUIJPanel();
@@ -72,33 +80,48 @@ public class GUI extends JFrame implements GUIvable {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-        windowGame.add(panelNorth, BorderLayout.NORTH);
-        windowGame.add(panelCentr, BorderLayout.CENTER);
 
-        panelNorth.setLayout(new GridLayout(2, 1));
-        panelCentr.setLayout(new GridLayout(1, 2 ));
+        panelGameComp.setLayout(new GridLayout(10,10,2,2));
+
+        ActionListenerComp buttonListener = new ActionListenerComp();
+
+        for (int i = 0; i < gameButtonsComp.length; i++) {
+            for (int j = 0; j < gameButtonsComp.length; j++) {
+                gameButtonsComp[i][j] = new GUIJButton();;
+                panelGameComp.add(gameButtonsComp[i][j]);
+                gameButtonsComp[i][j].getPoint().setX(j);
+                gameButtonsComp[i][j].getPoint().setY(i);
+                gameButtonsComp[i][j].addActionListener(buttonListener);
+            }
+        }
+
+        panelGamePlayer.setLayout(new GridLayout(10,10,2,2));
+        for (int i = 0; i < gameButtonsPlayer.length; i++) {
+            for (int j = 0; j < gameButtonsPlayer.length; j++) {
+                gameButtonsPlayer[i][j] = new GUIJButton();
+                panelGamePlayer.add(gameButtonsPlayer[i][j]);
+//                gameButtonsPlayer[i][j].getPoint().setX(j);
+//                gameButtonsPlayer[i][j].getPoint().setY(i);
+                gameButtonsPlayer[i][j].addActionListener(buttonListener);
+            }
+        }
+        panelLable.setLayout(new GridLayout(1, 2 ));
+        panelLable.add(lableComp);
+        panelLable.add(lablePlayer);
 
         panelNorth.add(panelBar);
         panelNorth.add(panelLable);
         panelCentr.add(panelGameComp);
         panelCentr.add(panelGamePlayer);
 
-        panelLable.setLayout(new GridLayout(1, 2 ));
-        panelLable.add(lableComp);
-        panelLable.add(lablePlayer);
+        panelNorth.setLayout(new GridLayout(2, 1));
+        panelCentr.setLayout(new GridLayout(1, 2 ));
 
-        panelGameComp.setLayout(new GridLayout(10,10,2,2));
-
-        for (int i = 0; i < gameButtons.length; i++) {
-            for (int j = 0; j < gameButtons.length; j++) {
-                gameButtons[i][j] = new GUIJButton();
-                panelGameComp.add(gameButtons[i][j]);
-            }
-
-        }
+        windowGame.add(panelNorth, BorderLayout.NORTH);
+        windowGame.add(panelCentr, BorderLayout.CENTER);
         windowGame.setVisible(true);// вызывается после всех операций с окном
-
     }
+
 
     @Override
     public void initWindowMenu() {

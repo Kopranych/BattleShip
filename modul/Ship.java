@@ -10,7 +10,7 @@ public class Ship {
     private int positinShip;
     private int coordinX;
     private int coordinY;
-    private final String intact = "@";
+    public static final String INTACT = "#";
     private String[][] shipBox;
 
     private int numOneTiered = 4;
@@ -32,7 +32,7 @@ public class Ship {
     }
 
     public String getIntact() {
-        return intact;
+        return INTACT;
     }
 
     public static int getHorizCoord() {
@@ -81,12 +81,12 @@ public class Ship {
         if (positinShip == horizCoord) {
             shipBox = new String[1][numberDeck];
             for (int i = 0; i < numberDeck; i++) {
-                shipBox[0][i] = intact;
+                shipBox[0][i] = INTACT;
             }
         } else {
             shipBox = new String[numberDeck][1];
             for (int i = 0; i < numberDeck; i++) {
-                shipBox[i][0] = intact;
+                shipBox[i][0] = INTACT;
             }
         }
     }
@@ -96,13 +96,13 @@ public class Ship {
             positinShip = vertikCoord;
             shipBox = new String[numberDeck][1];
             for (int i = 0; i < numberDeck; i++) {
-                shipBox[i][0] = intact;
+                shipBox[i][0] = INTACT;
             }
         } else {
             positinShip = horizCoord;
             shipBox = new String[1][numberDeck];
             for (int i = 0; i < numberDeck; i++) {
-                shipBox[0][i] = intact;
+                shipBox[0][i] = INTACT;
             }
         }
 
