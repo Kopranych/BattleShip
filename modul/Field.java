@@ -16,15 +16,16 @@ public class Field {
     private Ship[] shipField;
     public static final int XCOOR = 10;
     public static final int YCOOR = 10;
-    private static final int FIELD_SIZE = 11;
-    private GUIJButton[][] buttons;
-    private static final String EMPTY = "|";
-    public static final String[][] spaceGame = new String[FIELD_SIZE][FIELD_SIZE];
+    private static final int FIELD_SIZE = 10;
+    private JButton[][] buttons;
+    public static final String EMPTY = "|";
+    public final String[][] spaceGame = new String[FIELD_SIZE][FIELD_SIZE];
     private String[] topStringField = {" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
 
     public enum stateCells {
         EMPTY, WOUNDE, KILL
     }
+
     stateCells[][] cellsField;
 
 
@@ -53,22 +54,20 @@ public class Field {
 
         for (int i = 0; i < spaceGame.length; i++) {
             for (int j = 0; j < spaceGame.length; j++) {
-                if (i == 0) {
-                    spaceGame[i][j] = topStringField[j];
-                } else if (j == 0) {
-
-                    spaceGame[i][0] = Integer.toString(i);//строку переводим в символ
-                } else
-                    spaceGame[i][j] = EMPTY;
+//                if (i == 0) {
+//                    spaceGame[i][j] = topStringField[j];
+//                } else if (j == 0) {
+//
+//                    spaceGame[i][0] = Integer.toString(i);//строку переводим в символ
+//                } else
+                spaceGame[i][j] = EMPTY;
             }
         }
     }
 
 
-
-
     //метод установки корабля в игровое поле
-    public boolean setShipToField(Ship ship) {
+    public boolean setShipToField(Ship ship, boolean isView) {
         Random generator = new Random();
         int vertical;
         int horizont;
@@ -104,7 +103,9 @@ public class Field {
         for (int i = 0; i < ship.getShipBox().length; i++) {//
             for (int j = 0; j < ship.getShipBox()[i].length; j++) {
                 spaceGame[i + vertical][j + horizont] = ship.getShipBox()[i][j];//выставляем корабль в поле
-                buttons[vertical][horizont].setText(Ship.INTACT);
+                if(isView) {
+                    buttons[i + vertical][j + horizont].setText(Ship.INTACT);
+                }
             }
         }
         ship.setCoordinY(vertical);
@@ -114,28 +115,28 @@ public class Field {
     }
 
 
-
-//   Метод размещения кораблей в игровом поле
-    public void setFleet() {
+    //   Метод размещения кораблей в игровом поле
+    public void setFleet(boolean isView) {
         boolean setShipSuccessful = false;
         int pos = 1;
 
         while (!setShipSuccessful) {
-            for (int i = 0; i < shipField.length; i++) {
+            for (int i = shipField.length-1; i >= 0; i--) {
                 pos ^= shipField[0].getVertikCoord();
-                if (i < shipField[0].getNumOneTiered()) {
-                    shipField[i].creatSuperShip(shipField[0].getOneTiered(), pos);
-                    setShipToField(shipField[i]);
-                } else if (i < shipField[0].getNumTwoTiered() + shipField[0].getNumOneTiered()) {
-                    shipField[i].creatSuperShip(shipField[0].getTwoTiered(), pos);
-                    setShipToField(shipField[i]);
-                } else if (i < shipField[0].getNumThreeTiered() + shipField[0].getNumTwoTiered() + shipField[0].getNumOneTiered()) {
-                    shipField[i].creatSuperShip(shipField[0].getThreeTiered(), pos);
-                    setShipToField(shipField[i]);
-                } else if (i < shipField[0].getNumFourTiered() + shipField[0].getNumThreeTiered() + shipField[0].getNumTwoTiered() + shipField[0].getNumOneTiered()) {
+                if (i >= shipField[0].getNumThreeTiered() + shipField[0].getNumTwoTiered() + shipField[0].getNumOneTiered()) {
                     shipField[i].creatSuperShip(shipField[0].getFourTiered(), pos);
-                    setShipSuccessful = setShipToField(shipField[i]);
+                    setShipSuccessful = setShipToField(shipField[i], isView);
+                } else if (i >= shipField[0].getNumTwoTiered() + shipField[0].getNumOneTiered()) {
+                    shipField[i].creatSuperShip(shipField[0].getThreeTiered(), pos);
+                    setShipSuccessful = setShipToField(shipField[i], isView);
+                } else if (i >= shipField[0].getNumOneTiered()) {
+                    shipField[i].creatSuperShip(shipField[0].getTwoTiered(), pos);
+                    setShipSuccessful = setShipToField(shipField[i], isView);
+                } else {
+                    shipField[i].creatSuperShip(shipField[0].getOneTiered(), pos);
+                    setShipSuccessful = setShipToField(shipField[i], isView);
                 }
+
             }
         }
     }

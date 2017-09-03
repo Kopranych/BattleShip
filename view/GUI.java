@@ -19,12 +19,7 @@ public class GUI extends JFrame implements GUIvable {
     private GUIJFrame windowGame;
     private GUIJButton[] menuButton = new GUIJButton[3];
     private GUIJButton[][] gameButtonsComp;
-
-    public void setGameButtonsPlayer(JButton[][] gameButtonsPlayer) {
-        this.gameButtonsPlayer = gameButtonsPlayer;
-    }
-
-    private JButton[][] gameButtonsPlayer;
+    private GUIJButton[][] gameButtonsPlayer;
     private GUIJPanel panelGameComp = new GUIJPanel();
     private GUIJPanel panelGamePlayer = new GUIJPanel();
     private GUIJPanel panelLable = new GUIJPanel();
@@ -33,6 +28,10 @@ public class GUI extends JFrame implements GUIvable {
     private GUIJPanel panelCentr = new GUIJPanel();
     private GUIJLable lablePlayer = new GUIJLable("Player");
     private GUIJLable lableComp = new GUIJLable("Comp");
+
+    public void setGameButtonsPlayer(GUIJButton[][] gameButtonsPlayer) {
+        this.gameButtonsPlayer = gameButtonsPlayer;
+    }
 
     public void setWindowGame(GUIJFrame windowGame) {
         this.windowGame = windowGame;
@@ -54,6 +53,7 @@ public class GUI extends JFrame implements GUIvable {
         this.fieldComp = fieldComp;
     }
 
+    @Override
     public void showField(Field field) {
         for (int i = 0; i < field.spaceGame.length; i++) {
             for (int j = 0; j < field.spaceGame.length; j++) {
@@ -91,6 +91,7 @@ public class GUI extends JFrame implements GUIvable {
                 panelGameComp.add(gameButtonsComp[i][j]);
                 gameButtonsComp[i][j].getPoint().setX(j);
                 gameButtonsComp[i][j].getPoint().setY(i);
+
                 gameButtonsComp[i][j].addActionListener(buttonListener);
             }
         }
@@ -100,9 +101,8 @@ public class GUI extends JFrame implements GUIvable {
             for (int j = 0; j < gameButtonsPlayer.length; j++) {
                 gameButtonsPlayer[i][j] = new GUIJButton();
                 panelGamePlayer.add(gameButtonsPlayer[i][j]);
-//                gameButtonsPlayer[i][j].getPoint().setX(j);
-//                gameButtonsPlayer[i][j].getPoint().setY(i);
-                gameButtonsPlayer[i][j].addActionListener(buttonListener);
+                gameButtonsPlayer[i][j].getPoint().setX(j);
+                gameButtonsPlayer[i][j].getPoint().setY(i);
             }
         }
         panelLable.setLayout(new GridLayout(1, 2 ));
@@ -147,8 +147,5 @@ public class GUI extends JFrame implements GUIvable {
         setVisible(true);
     }
 
-    @Override
-    public void showField() {
 
-    }
 }
